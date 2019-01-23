@@ -1,7 +1,5 @@
 
-# Lab
-
-GitHub repo: https://aka.ms/apim/labready2019 
+# Implement, manage and secure a scalable serverless application with API Management
 
 Instructions for the technical lab at Microsoft Ready (Winter 2019).
 
@@ -9,7 +7,6 @@ Instructors:
 - Mike Budzynski
 - Elizabeth Graham
 - David Barkol
-
 
 ## Exercise 1: Create and implement resources
 
@@ -328,3 +325,7 @@ Instructors:
         "cacheKey": "..."
     }
     ```
+
+## Additional resources
+
+If instructed, please visit this link: https://aka.ms/apim/labready2019 
