@@ -127,10 +127,23 @@ Instructors:
 ### Test the API
 
 1. Go to the **Test** tab in the top menu.
-2. Select **GET Product** from the API operations list.
-3. Click **+ Add parameter**. Set name to **name**, value to **Microsoft Surface**.
+2. Select **POST Order** from the API operations list.
+3. In the **Request body** paste:
+
+    ```
+    {
+        "id": "14157194",
+        "address": "One Microsoft Way, Redmond, WA, USA",
+        "products": 
+        [
+            "31", 
+            "145"
+        ]
+    }
+    ```
+
 4. Click **Send**.
-5. You should a **200 OK** response:
+5. You should receive a **200 OK** response:
 
     ```
     HTTP/1.1 200 OK
@@ -138,8 +151,15 @@ Instructors:
     cache-control: private
     ...
     x-powered-by: ASP.NET,ASP.NET
-
-    {"Name":"Microsoft Surface","Description":"Coming soon..."}
+    {
+        "id": "14157194",
+        "address": "One Microsoft Way, Redmond, WA, USA",
+        "products": 
+        [
+            "31", 
+            "145"
+        ]
+    }
     ```
 
 ## Exercise 3: Manage and protect the Store API
