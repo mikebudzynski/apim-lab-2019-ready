@@ -23,16 +23,19 @@ Instructors:
 ### Implement Function App store-order
 
 1. Navigate to the Function App **store-order-...**.
-2. Add new HTTP trigger Function. Name it **Order** and leave authorization level as **Function**. Click **Create**.
-3. Navigate to **Integrate** tab.
-4. Unselect **GET** in **Selected HTTP methods** and click **Save**.
-5. Click on **+ New Output**. Pick **Azure Service Bus** and click on **Select**.
-6. In the **Extensions not Installed** section, click **Install**.
-7. Click **new** in the **Service Bus connection** section. Choose **store-msg-...** as the namespace and click **Select**.
-8. Choose **Service Bus queue** in the **Message type** section. 
-9. Set **Queue name** to **store-msg-queue-1**.
-10. Click **Save**.
-11. Go to the Function implementation. Replace the code of the Function with:
+1. Add new HTTP trigger Function. Click on the **+** icon next to **Functions**. Select **In portal -> Continue -> More templates -> Finish**.
+1. Click on the **Http Trigger** tile.
+1. Name the Function **Order** and leave authorization level as **Function**.
+1. Click **Create**.
+1. Navigate to **Integrate** tab.
+1. Unselect **GET** in **Selected HTTP methods** and click **Save**.
+1. Click on **+ New Output**. Pick **Azure Service Bus** and click on **Select**.
+1. In the **Extensions not Installed** section, click **Install**.
+1. Click **new** in the **Service Bus connection** section. Choose **store-msg-...** as the namespace and click **Select**.
+1. Choose **Service Bus queue** in the **Message type** section. 
+1. Set **Queue name** to **store-msg-queue-1**.
+1. Click **Save**.
+1. Go to the Function implementation. Replace the code of the Function with:
 
     ```C#
     public static string Run(HttpRequest req, ILogger log, out string outputSbMsg)
@@ -50,7 +53,7 @@ Instructors:
         return message;
     }
     ```
-12. Click **Save**.
+1. Click **Save**.
 
 ### Implement Function App store-product
 
