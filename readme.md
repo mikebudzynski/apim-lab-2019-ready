@@ -50,21 +50,13 @@ Instructors:
         return message;
     }
     ```
-12. Click **Save and run** to see if the Function works. You should the response:
-    ```JSON
-    {
-        "name": "Azure"
-    }
-    ```
+12. Click **Save**.
 
 ### Implement Function App store-product
 
 1. Navigate to the Function App **store-product-...**.
-2. Add new HTTP trigger Function. Name it **Product** and leave authorization level as **Function**. Click **Create**.
-3. Navigate to **Integrate** tab.
-4. Unselect **POST** in **Selected HTTP methods** and click **Save**.
-5. Click **Save**.
-6. Go to the Function implementation. Replace the code of the Function with:
+1. Add new HTTP trigger Function. Name it **Product** and leave authorization level as **Function**. Click **Create**.
+1. Go to the Function implementation. Replace the code of the Function with:
 
     ```C#
     #r "Newtonsoft.Json"
@@ -99,9 +91,10 @@ Instructors:
         return (ActionResult) new OkObjectResult(productSerialized);
     }
     ```
-7. Click **Save and run** to see if the Function works.
-8. On the right sidebar, in the **Query** section, click **+ Add parameter**. Set name to **name** and value to **Microsoft Surface**.
-9. Click **Run** in the right sidebar and you should see the response:
+1. Click **Save and run** to see if the Function works.
+1. On the right sidebar, in the **Query** section, click **+ Add parameter**. Set name to **name** and value to **Microsoft Surface**.
+1. Select the **GET** operation from the dropdown.
+1. Click **Run** in the right sidebar and you should see the response:
     ```JSON
     {"Name":"Microsoft Surface","Description":"Coming soon..."}
     ```
@@ -121,11 +114,35 @@ Instructors:
 9. Click **...** next to your API name on the left sidebar. Select **Import**.
 10. Browse for the **store-order-...** app and confirm import.
 
+### Make sure the Service Bus output works
+
+Unfortunately, there is a bug in Azure Functions, which most likely prevented your *Order* Function from correct activation. To make sure your Function works, you need to repeat the following steps:
+
+1. Navigate to the Function App **store-order-...**.
+1. Navigate to **Integrate** tab.
+1. Click on the existing Service Bus output.
+1. Select **Delete**.
+1. Click on **+ New Output**. Pick **Azure Service Bus** and click on **Select**.
+1. In the **Extensions not Installed** section, click **Install**.
+1. The **Service Bus connection** should already be propagated with **store-msg-...**.
+1. Choose **Service Bus queue** in the **Message type** section.
+1. Set **Queue name** to **store-msg-queue-1**.
+1. Click **Save**.
+1. Wait 2 minutes for the changes to propagate.
+1. Go to the Function implementation. Click **Run** to see if the Function works. You should the response:
+    ```JSON
+    {
+        "name": "Azure"
+    }
+    ```
+
 ### Test the API
 
+1. Navigate to the API Management instance **store-api-...** located in your resource group.
+1. Click on **APIs** on the left sidebar and go to the **Store API**.
 1. Go to the **Test** tab in the top menu.
-2. Select **POST Order** from the API operations list.
-3. In the **Request body** paste:
+1. Select **POST Order** from the API operations list.
+1. In the **Request body** paste:
 
     ```
     {
@@ -139,8 +156,8 @@ Instructors:
     }
     ```
 
-4. Click **Send**.
-5. You should receive a **200 OK** response:
+1. Click **Send**.
+1. You should receive a **200 OK** response:
 
     ```
     HTTP/1.1 200 OK
@@ -164,16 +181,31 @@ Instructors:
 ### Implement a throttling policy
 
 1. Go to the **Design** view of the **Store API** in your API Management instance.
-2. Click the **</>** icon in the **Inbound processing** section.
-3. Add the **rate-limit** line in the ```<inbound>...</inbound>``` section as follows:
+1. Make sure you have selected **All operations** on the left bar with API operations.
+1. Click the **</>** icon in the **Inbound processing** section.
+1. Place a cursor in the `<inbound>` section:
+    ```XML
+        <inbound>
+            <base />
+            |
+        </inbound>
+    ```
+1. Select **Limit call rate per key** from the right sidebar. It will automatically add the **rate-limit-by-key** line in the ```<inbound>...</inbound>``` section as follows:
 
     ```XML
     <inbound>
         <base />
-        <rate-limit calls="5" renewal-period="30" />
+        <rate-limit-by-key calls="number" renewal-period="seconds" counter-key="@()" />
     </inbound>
     ```
-4. Click **Save**.
+
+1. Fill the placeholders in the policy with the information below:
+
+    ```XML
+    <rate-limit-by-key calls="5" renewal-period="30" counter-key="@(context.Subscription.Key)" />
+    ```
+
+1. Click **Save**.
 
 ### Test the throttling policy
 
@@ -199,14 +231,16 @@ Instructors:
 ### Create a new version of the API
 
 1. Go to the **Design** view of the **Store API** in your API Management instance.
-2. Click **...** next to your API name on the left sidebar. Select **Add version**.
-3. Set name to **store-api-v2**.
-4. Set version identifier to **v2**.
-5. Click **Create**.
-6. Make sure **v2** is selected on the left side bar.
-7. Click **...** next to the **POST Product** API operation.
-8. Select **Delete** and click **Yes**.
-9. Compare the versions. **Original** should have the **POST Product** operation, while **v2** shouldn't.
+1. Click **...** next to your API name on the left sidebar. Select **Add version**.
+1. Set name to **store-api-v2**.
+1. Set version identifier to **v2**.
+1. Click **Create**.
+1. Make sure **v2** is selected on the left side bar. Click on **Original** and then **v2** to load it.
+1. Click **...** next to the **POST Product** API operation.
+1. Select **Delete** and click **Yes**.
+1. Select **...** next to `rate-limit-by-key` in the **Inbound processing** section and click **Delete**.
+1. Click **Save** at the bottom.
+1. Compare the versions. **Original** should have the **POST Product** operation, while **v2** shouldn't.
 
 ### Add a CORS policy
 
@@ -259,20 +293,31 @@ Instructors:
 5. Select **Sampling** to **100%** for testing purposes.
 6. Click **Save**.
 
-### Generate your API usage
-
-1. Go to the **Test** tab in the top menu.
-2. Select **GET Product** from the API operations list.
-3. Click **Send** a few times.
-
-### See the logs in Application Insights
+### See the existing logs in Application Insights
 
 1. Navigate to the Application Insights instance **store-logs** located in your resource group.
 2. Look at the dashboards in the overview.
 3. Go to **Application map** from the menu on the left.
-4. Click on the **storeapi...** node, and then on the **Investigate performance** on the right.
-5. Click on the **Drill into (xx) samples** button in the bottom right corner.
-6. Select a sample from the list and view the properties of the request.
+4. You should be able to see two Function Apps and a Service Bus there.
+
+### Generate your API usage
+
+1. Navigate back to the API Management instance **store-api-...** located in your resource group.
+1. 1. Select **APIs** from the menu on the left and navigate to the **Store API, v2**.
+1. Make sure at least 2 minutes have passed since you complete the steps for *Enable logging to Application Insights*.
+1. Go to the **Test** tab in the top menu.
+1. Select **GET Product** from the API operations list.
+1. Click **Send** a few times.
+
+### See the logs in Application Insights
+
+1. Navigate back to the Application Insights instance **store-logs** located in your resource group.
+1. You need to wait at least a minute since generating the API usage.
+1. Look at the dashboards in the overview.
+1. Go to **Application map** from the menu on the left.
+1. Now you should be able to see another node for API Management: **storeapi...**. Click on it and then on the **Investigate performance** on the right.
+1. Click on the **Drill into (xx) samples** button in the bottom right corner.
+1. Select a sample from the list and view the properties of the request.
 
 ## Exercise 5 (optional): Cache responses
 
