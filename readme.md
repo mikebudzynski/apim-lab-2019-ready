@@ -34,6 +34,7 @@ Instructors:
 1. Click **new** in the **Service Bus connection** section. Choose **store-msg-...** as the namespace and click **Select**.
 1. Choose **Service Bus queue** in the **Message type** section. 
 1. Set **Queue name** to **store-msg-queue-1**.
+1. Important: wait at least 1-2 minutes.
 1. Click **Save**.
 1. Go to the Function implementation. Replace the code of the Function with:
 
@@ -119,9 +120,16 @@ Instructors:
 
 ### Make sure the Service Bus output works
 
-Unfortunately, there is a bug in Azure Functions, which most likely prevented your *Order* Function from correct activation. To make sure your Function works, you need to repeat the following steps:
+Unfortunately, there is a bug in Azure Functions, which most likely prevented your *Order* Function from correct activation. To make sure your Function works, follow the steps below:
 
 1. Navigate to the Function App **store-order-...**.
+1. Go to the Function implementation. Click **Run** to see if the Function works. You should see the response:
+    ```JSON
+    {
+        "name": "Azure"
+    }
+    ```
+1. If you do not see the response, you need to recreate the Function's output - continue with the steps below. If you see the correct response, you can skip to the next section *Test the API*.
 1. Navigate to **Integrate** tab.
 1. Click on the existing Service Bus output.
 1. Select **Delete**.
@@ -132,7 +140,7 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 1. Set **Queue name** to **store-msg-queue-1**.
 1. Click **Save**.
 1. Wait 2 minutes for the changes to propagate.
-1. Go to the Function implementation. Click **Run** to see if the Function works. You should the response:
+1. Go to the Function implementation. Click **Run** to see if the Function works. You should see the response:
     ```JSON
     {
         "name": "Azure"
@@ -241,13 +249,14 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 1. Make sure **v2** is selected on the left side bar. Click on **Original** and then **v2** to load it.
 1. Click **...** next to the **POST Product** API operation.
 1. Select **Delete** and click **Yes**.
+1. Go to the **Design** view.
 1. Select **...** next to `rate-limit-by-key` in the **Inbound processing** section and click **Delete**.
 1. Click **Save** at the bottom.
 1. Compare the versions. **Original** should have the **POST Product** operation, while **v2** shouldn't.
 
 ### Add a CORS policy
 
-1. Go to the **Design** view of the **Store API** in your API Management instance.
+1. Go to the **Design** view of the **Store API** in your API Management instance, and click **All operations**.
 2. Click **+ Add policy** in the **Inbound processing** section.
 3. Select the **Allow cross-origin resource sharing (CORS)** tile.
 4. Click **Save**.
@@ -266,7 +275,7 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 1. Go to the **Test** tab in the top menu.
 2. Select **GET Product** from the API operations list.
 3. Click **Send**.
-4. You should a **200 OK** response:
+4. You should see a **200 OK** response:
 
     ```
     HTTP/1.1 200 OK
@@ -306,8 +315,8 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 ### Generate your API usage
 
 1. Navigate back to the API Management instance **store-api-...** located in your resource group.
-1. 1. Select **APIs** from the menu on the left and navigate to the **Store API, v2**.
-1. Make sure at least 2 minutes have passed since you complete the steps for *Enable logging to Application Insights*.
+1. Select **APIs** from the menu on the left and navigate to the **Store API, v2**.
+1. Make sure at least 2 minutes have passed since you completed the steps in *Enable logging to Application Insights*.
 1. Go to the **Test** tab in the top menu.
 1. Select **GET Product** from the API operations list.
 1. Click **Send** a few times.
@@ -315,7 +324,7 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 ### See the logs in Application Insights
 
 1. Navigate back to the Application Insights instance **store-logs** located in your resource group.
-1. You need to wait at least a minute since generating the API usage.
+1. You need to wait a few minutes since generating the API usage.
 1. Look at the dashboards in the overview.
 1. Go to **Application map** from the menu on the left.
 1. Now you should be able to see another node for API Management: **storeapi...**. Click on it and then on the **Investigate performance** on the right.
@@ -376,4 +385,4 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 
 ## Additional resources
 
-If instructed, please visit this link: https://aka.ms/apim/labready2019 
+If instructed, please visit this link: [https://aka.ms/apim/labready2019](https://aka.ms/apim/labready2019)
