@@ -9,6 +9,8 @@ Instructors:
 - Elizabeth Graham
 - David Barkol
 
+Please, take a look at a [blog about using Azure API Management with serverless microservices](https://aka.ms/apimserverlessblog).
+
 ## Exercise 1: Create and implement resources
 
 ### View your resources
@@ -383,7 +385,3 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
         "cacheKey": "..."
     }
     ```
-
-## Additional resources
-
-If instructed, please visit this link: [https://aka.ms/apim/labready2019](https://aka.ms/apim/labready2019)
