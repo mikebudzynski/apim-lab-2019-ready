@@ -1,4 +1,3 @@
-
 # Implement, manage and secure a scalable serverless application with API Management
 
 Instructions for the technical lab at Microsoft Ready (Winter 2019).
