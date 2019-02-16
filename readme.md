@@ -1,5 +1,7 @@
 # Implement, manage and secure a scalable serverless application with API Management
 
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmikebudzynski%2Fapim-lab-2019-ready%2Fmaster%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+
 Instructions for the technical lab at Microsoft Ready (Winter 2019).
 
 Instructors: 
