@@ -342,7 +342,8 @@ Unfortunately, there is a bug in Azure Functions, which most likely prevented yo
 2. Select **External cache** from the menu on the left.
 3. Click **+ Add**.
 4. Select **store-cache-...** as the cache instance.
-5. Click **Save**.
+5. Make sure the **Used from** field is set to **Default** or points to the region of your API Management instance.
+6. Click **Save**.
 
 ### Add a policy for caching responses
 
